@@ -34,7 +34,6 @@ class CoinHistory(object):
                           coins[i]['percent_change_7d'], coins[i]['last_updated'], exchange))
                 print(coins[i]) #Remove this for faster inserts
                 time.sleep(0.2) #And remove this
-                i += 1
             conn.commit()
             c.close()
             conn.close()
