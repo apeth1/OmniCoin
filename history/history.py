@@ -7,33 +7,34 @@
 
 import sqlite3
 import json
-import time
+import os
+
 from omni_coin.log import LogManager
 
 
-class CoinHistory(object):
+class CoinPriceHistory(object):
     def __init__(self, response, table):
         self.response = json.loads(response)
         self.table = table
-        logger = LogManager("history_log", "history.log")
+        self.db_path = os.path.join(os.getcwd(), "data", "price_history.db")
+        self.log_path = os.path.join(os.getcwd(),"log","db.log")
+        logger = LogManager("history_log", self.log_path)
         self.history_logger = logger.create_logger()
 
     def store(self, exchange) -> int:
         coins = self.response
         self._initialize_db()
-        conn = sqlite3.connect('price_history.db')
+        conn = sqlite3.connect(self.db_path)
         c = conn.cursor()
         i = 0
         try:
-            for i in range(1, len(coins)):
+            for i in range(0, len(coins)):
                 c.execute("INSERT INTO price_history VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", (coins[i]['id'],
                           coins[i]['name'], coins[i]['symbol'], coins[i]['rank'],
                           coins[i]['price_usd'], coins[i]['price_btc'], coins[i]['24h_volume_usd'],
                           coins[i]['market_cap_usd'], coins[i]['available_supply'], coins[i]['total_supply'],
                           coins[i]['percent_change_1h'], coins[i]['percent_change_24h'],
                           coins[i]['percent_change_7d'], coins[i]['last_updated'], exchange))
-                print(coins[i]) #Remove this for faster inserts
-                time.sleep(0.2) #And remove this
             conn.commit()
             c.close()
             conn.close()
@@ -46,7 +47,7 @@ class CoinHistory(object):
 
     def _initialize_db(self):
         try:
-            conn = sqlite3.connect('price_history.db')
+            conn = sqlite3.connect(self.db_path)
             c = conn.cursor()
             c.execute('''CREATE TABLE IF NOT EXISTS price_history 
                     (id text, name text, symbol text, rank text,
