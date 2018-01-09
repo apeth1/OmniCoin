@@ -9,3 +9,5 @@
 API = {'cmc': "https://api.coinmarketcap.com/v1/ticker/",
        'poloniex': ''}
 
+KAFKA = {'boostrap.servers': "localhost:9092"}
+

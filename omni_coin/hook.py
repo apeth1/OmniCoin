@@ -5,6 +5,7 @@
 # All Rights Reserved (c) 2018
 # ************************
 import requests
+import os
 from omni_coin import log
 
 """
@@ -19,7 +20,8 @@ Supports:
 class CoinMarketCapApi(object):
     def __init__(self, url):
         self.url= url
-        api_log = log.LogManager('api_hook', 'api.log')
+        log_path = os.path.join(os.getcwd(),"log","api.log")
+        api_log = log.LogManager('api_hook', log_path)
         self.api_log = api_log.create_logger()
 
     def get(self, ticker: str = None, currency: str = None) -> str:
