@@ -13,16 +13,15 @@ from omni_coin.log import LogManager
 
 
 class CoinPriceHistory(object):
-    def __init__(self, response, table):
-        self.response = json.loads(response)
+    def __init__(self, table):
         self.table = table
         self.db_path = os.path.join(os.getcwd(), "data", "price_history.db")
         self.log_path = os.path.join(os.getcwd(),"log","db.log")
         logger = LogManager("history_log", self.log_path)
         self.history_logger = logger.create_logger()
 
-    def store(self, exchange):
-        coins = self.response
+    def store(self, response, exchange):
+        coins = json.loads(response)
         self._initialize_db()
         conn = sqlite3.connect(self.db_path)
         c = conn.cursor()
