@@ -21,7 +21,7 @@ class CoinPriceHistory(object):
         logger = LogManager("history_log", self.log_path)
         self.history_logger = logger.create_logger()
 
-    def store(self, exchange) -> int:
+    def store(self, exchange):
         coins = self.response
         self._initialize_db()
         conn = sqlite3.connect(self.db_path)
