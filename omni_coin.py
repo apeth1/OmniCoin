@@ -13,11 +13,11 @@ import time
 if __name__ == "__main__":
     queries = 0
     cmc_api = hook.CoinMarketCapApi(settings.API['cmc'])
+    db = history.CoinPriceHistory("cmc_pricing")
     while True:
         coins = cmc_api.get()
         if coins != "[{}]":
-            db = history.CoinPriceHistory(coins, "cmc_pricing")
-            indicator = db.store("CoinMarketCap")
+            indicator = db.store(coins, "CoinMarketCap")
             print(str(indicator))
             queries+=1
-        time.sleep(30)
+        time.sleep(180)
