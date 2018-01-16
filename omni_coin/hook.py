@@ -19,12 +19,12 @@ Supports:
 
 class CoinMarketCapApi(object):
     def __init__(self, url):
-        self.url= url
+        self.url = url
         log_path = os.path.join(os.getcwd(),"log","api.log")
         api_log = log.LogManager('api_hook', log_path)
         self.api_log = api_log.create_logger()
 
-    def get(self, ticker: str = None, currency: str = None) -> str:
+    def get(self, ticker=None, currency=None):
         if ticker is not None:
             self.url = self._url_builder(ticker, currency)
         try:
@@ -44,7 +44,7 @@ class CoinMarketCapApi(object):
             self.api_log.info("Requests Exception Occurred: %s" % str(e))
             return '[{}]'
 
-    def _url_builder(self, ticker: str = None, currency: str = None) -> str:
+    def _url_builder(self, ticker=None, currency= None):
         url = self.url
         if ticker is not None:
             url = self.url + ticker + '/'
